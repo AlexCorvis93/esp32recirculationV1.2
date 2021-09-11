@@ -1,4 +1,4 @@
-#include <EEPROM.h>
+#include <Preferences.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_GrayOLED.h>
 #include <Adafruit_SPITFT.h>
@@ -12,7 +12,7 @@
 #include <pgmspace.h>
 
 
-//Preferences preferences;
+Preferences preferences;
 #define UVsensor 15
 #define relay 12
 #define buttPinRST 35
@@ -38,16 +38,16 @@ int sensValue = 0;
 
 void setup() {
   
- // preferences.begin("coun-hour", false);
-//  goTime = preferences.getInt("goTime", 0);
-  tft.initR(INITR_BLACKTAB); // initcialization
-  tft.fillScreen(ST7735_BLACK);
-  tft.setRotation(1);
-  pinMode (relay, OUTPUT);
-  digitalWrite(relay, LOW);
-  pinMode (buttPinRST, INPUT); ///RESET
-  pinMode(buttPinStart, INPUT);//START
-  pinMode(buttPinMode, INPUT);//MODE
+ preferences.begin("coun-hour", false);
+ goTime = preferences.getInt("goTime", 0);
+ tft.initR(INITR_BLACKTAB); // initcialization
+ tft.fillScreen(ST7735_BLACK);
+ tft.setRotation(1);
+ pinMode (relay, OUTPUT);
+ digitalWrite(relay, LOW);
+ pinMode (buttPinRST, INPUT); ///RESET
+ pinMode(buttPinStart, INPUT);//START
+ pinMode(buttPinMode, INPUT);//MODE
   ///logo
   tft.fillScreen(ST7735_BLACK);
   tft.setFont(&FreeSansBold12pt7b);
@@ -446,8 +446,8 @@ clear_Mem ();
 void clear_Mem () {
   if (digitalRead(buttPinStart) == HIGH && digitalRead(buttPinMode) == HIGH && digitalRead(buttPinRST) == HIGH) {
     delay(300);
-   // goTime = preferences.getInt("goTime", 0);
- //   preferences.clear();
+    goTime = preferences.getInt("goTime", 0);
+    preferences.clear();
   }
 }
 
